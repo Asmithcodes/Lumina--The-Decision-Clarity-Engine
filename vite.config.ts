@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  base: '/lumina_-decision-clarity-engine/',
+  base: '/Lumina--The-Decision-Clarity-Engine/',
   define: {
     'process.env': {}
   }
