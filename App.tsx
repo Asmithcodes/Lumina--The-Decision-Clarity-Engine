@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import NeuroKnot from './components/NeuroKnot';
 import WarningGate from './components/WarningGate';
-import ApiKeyModal from './components/ApiKeyModal';
 import CognitiveHUD from './components/CognitiveHUD';
 import IntroBriefing from './components/IntroBriefing';
 import { GeminiService } from './services/geminiService';
@@ -10,8 +9,6 @@ import { AppPhase, Question, AnalysisResult } from './types';
 
 function App() {
   const [phase, setPhase] = useState<AppPhase>(AppPhase.GATE);
-  const [apiKey, setApiKey] = useState<string>('');
-  const [showApiModal, setShowApiModal] = useState(false);
   const [dilemma, setDilemma] = useState('');
   const [questions, setQuestions] = useState<string[]>([]);
   const [answers, setAnswers] = useState<string[]>([]);
@@ -22,8 +19,8 @@ function App() {
   const [currentInput, setCurrentInput] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Initialize Service
-  const getService = () => new GeminiService(apiKey);
+  // Initialize Service (no API key needed - using Worker!)
+  const getService = () => new GeminiService();
 
   // Physics Calculation
   // During questions, ratio = answers / total.
@@ -41,10 +38,6 @@ function App() {
     setPhase(AppPhase.INPUT);
   };
 
-  const isCriticalError = (errMessage: string) => {
-    return ['AUTH_ERROR', 'INVALID_KEY', 'QUOTA_EXHAUSTED'].includes(errMessage);
-  };
-
   const handleDilemmaSubmit = async () => {
     if (!currentInput.trim()) return;
     setDilemma(currentInput);
@@ -60,13 +53,9 @@ function App() {
       setPhase(AppPhase.QUESTIONS);
     } catch (error: any) {
       setLoading(false);
-      if (isCriticalError(error.message)) {
-        setShowApiModal(true);
-      } else {
-        console.error(error);
-        alert("The void is silent. Please try again. (System Error)");
-        setPhase(AppPhase.INPUT);
-      }
+      console.error(error);
+      alert("The void is silent. Please try again. (System Error)");
+      setPhase(AppPhase.INPUT);
     }
   };
 
@@ -93,24 +82,12 @@ function App() {
         setPhase(AppPhase.CLARITY);
       } catch (error: any) {
         setLoading(false);
-        if (isCriticalError(error.message)) {
-          setShowApiModal(true);
-        } else {
-          console.error(error);
-          alert("Analysis failed. The entropy was too high. Try again.");
-          setPhase(AppPhase.QUESTIONS); // Reset to allow retry
-          setAnswers(prev => prev.slice(0, -1)); // Remove last answer to retry
-        }
+        console.error(error);
+        alert("Analysis failed. The entropy was too high. Try again.");
+        setPhase(AppPhase.QUESTIONS); // Reset to allow retry
+        setAnswers(prev => prev.slice(0, -1)); // Remove last answer to retry
       }
     }
-  };
-
-  const handleApiUpdate = (key: string) => {
-    setApiKey(key);
-    setShowApiModal(false);
-    // Retry logic based on where we failed
-    if (phase === AppPhase.PROCESSING_1) handleDilemmaSubmit();
-    if (phase === AppPhase.PROCESSING_2) handleAnswerSubmit(); 
   };
 
   const resetApp = () => {
@@ -281,12 +258,6 @@ function App() {
           </p>
         </footer>
       </div>
-
-      <ApiKeyModal 
-        isOpen={showApiModal} 
-        onClose={() => setShowApiModal(false)}
-        onSubmit={handleApiUpdate}
-      />
     </div>
   );
 }
