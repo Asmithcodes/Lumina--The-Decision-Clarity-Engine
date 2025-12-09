@@ -4,6 +4,7 @@ import NeuroKnot from './components/NeuroKnot';
 import WarningGate from './components/WarningGate';
 import CognitiveHUD from './components/CognitiveHUD';
 import IntroBriefing from './components/IntroBriefing';
+import ResetButton from './components/ResetButton';
 import { GeminiService } from './services/geminiService';
 import { AppPhase, Question, AnalysisResult } from './types';
 
@@ -114,14 +115,11 @@ function App() {
         {/* Header (Hidden on Gate) */}
         {phase !== AppPhase.GATE && (
           <>
-            <header className="absolute top-0 w-full p-6 flex justify-start items-center gap-8 z-20 backdrop-blur-sm">
-              <div className="text-xs font-mono tracking-widest text-cyan-500/80">LUMINA v1.0</div>
-              <button
-                onClick={resetApp}
-                className="text-xs font-mono tracking-widest text-gray-400 hover:text-cyan-400 transition-colors border-b border-transparent hover:border-cyan-400/50 pb-0.5"
-              >
-                [ RESET_SYSTEM ]
-              </button>
+            <header className="absolute top-0 w-full p-6 flex justify-start items-center gap-8 z-20 backdrop-blur-sm pointer-events-none">
+              <div className="text-xs font-mono tracking-widest text-cyan-500/80 pointer-events-auto">LUMINA v1.0</div>
+              <div className="pointer-events-auto">
+                <ResetButton onClick={resetApp} />
+              </div>
             </header>
 
             {/* Cognitive HUD (Hidden on Gate) */}
