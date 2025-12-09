@@ -52,7 +52,13 @@ export class GeminiService {
       3. What is the one hard action they must take? (The thing they're most afraid to do)
       
       Be brutally honest and cut deep, but use simple words. Destroy their comfortable illusions.
-      Return JSON format.
+      
+      Return ONLY a JSON object with these exact keys:
+      {
+        "coreTruth": "The brutal truth they avoid",
+        "blindSpot": "The lie lying to themselves",
+        "actionableStep": "The one hard thing they must do"
+      }
     `;
 
     try {
