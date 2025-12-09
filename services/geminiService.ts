@@ -29,7 +29,8 @@ export class GeminiService {
     Return ONLY a JSON array of strings.`;
 
     try {
-      const text = await this.callWorkerAPI(prompt, MODEL_PRIMARY);
+      // Use the new Retry Cascade
+      const text = await this.callWithRetry(prompt);
       return JSON.parse(text);
     } catch (error) {
       console.error("Gemini Generate Questions Failed:", error);
@@ -62,10 +63,29 @@ export class GeminiService {
     `;
 
     try {
-      const text = await this.callWorkerAPI(prompt, MODEL_PRIMARY);
+      // Use the new Retry Cascade
+      const text = await this.callWithRetry(prompt);
       return JSON.parse(text);
     } catch (error) {
       console.error("Gemini Analysis Failed:", error);
+      throw error;
+    }
+  }
+
+  /**
+   * The Double-Model Efficiency Cascade
+   * 1. Try Primary Model (Flash 2.5)
+   * 2. If 429 Quota Exceeded -> Fallback to Flash Lite
+   * 3. If both fail -> Throw error (UI triggers override)
+   */
+  private async callWithRetry(prompt: string): Promise<string> {
+    try {
+      return await this.callWorkerAPI(prompt, MODEL_PRIMARY);
+    } catch (error: any) {
+      if (error.message === 'QUOTA_EXHAUSTED') {
+        console.warn(`[Lumina] Primary model quota hit. Switching to FALLBACK: ${MODEL_FALLBACK}`);
+        return await this.callWorkerAPI(prompt, MODEL_FALLBACK);
+      }
       throw error;
     }
   }
@@ -79,7 +99,7 @@ export class GeminiService {
       console.log(`[Lumina] Calling Worker at: ${this.workerUrl}`);
       console.log(`[Lumina] Model: ${model}`);
       console.log(`[Lumina] Prompt length: ${prompt.length} characters`);
-      
+
       const response = await fetch(this.workerUrl, {
         method: 'POST',
         headers: {
@@ -93,12 +113,18 @@ export class GeminiService {
       if (!response.ok) {
         const errorText = await response.text();
         console.error(`[Lumina] Error response:`, errorText);
+
+        // Check for Quota Error in the response text directly to be safe
+        if (errorText.includes('429') || errorText.includes('quota') || response.status === 429) {
+          throw new Error('QUOTA_EXHAUSTED');
+        }
+
         throw new Error(`Worker error: ${response.status} - ${errorText}`);
       }
 
       const data = await response.json();
       console.log(`[Lumina] Response data:`, data);
-      
+
       if (!data.text) {
         throw new Error('No text in response from worker');
       }
@@ -108,19 +134,23 @@ export class GeminiService {
 
     } catch (error: any) {
       const msg = error.message || error.toString();
-      console.error(`[Lumina] Worker API call failed:`, error);
-      console.error(`[Lumina] Error message:`, msg);
-      
-      // Throw user-friendly errors
+
+      // Propagate the specific QUOTA error so the retry logic catches it
+      if (msg === 'QUOTA_EXHAUSTED' || msg.includes('QUOTA_EXHAUSTED')) {
+        throw new Error('QUOTA_EXHAUSTED');
+      }
+
       if (msg.includes('403') || msg.includes('Forbidden')) {
         alert('CORS Error: The Worker is blocking localhost. Deploying to GitHub Pages will fix this.');
         throw new Error('INVALID_KEY');
       }
+
+      // Checking for quota in strict error object
       if (msg.includes('429') || msg.includes('quota')) {
         throw new Error('QUOTA_EXHAUSTED');
       }
-      
-      alert(`Error calling Worker: ${msg}`);
+
+      console.error(`[Lumina] Worker API call failed:`, error);
       throw new Error('GENERIC_ERROR');
     }
   }
