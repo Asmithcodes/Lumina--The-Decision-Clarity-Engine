@@ -14,7 +14,7 @@ function App() {
   const [answers, setAnswers] = useState<string[]>([]);
   const [currentQIndex, setCurrentQIndex] = useState(0);
   const [analysis, setAnalysis] = useState<AnalysisResult | null>(null);
-  
+
   // UI State for inputs
   const [currentInput, setCurrentInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -61,7 +61,7 @@ function App() {
 
   const handleAnswerSubmit = async () => {
     if (!currentInput.trim()) return;
-    
+
     const newAnswers = [...answers, currentInput];
     setAnswers(newAnswers);
     setCurrentInput('');
@@ -72,7 +72,7 @@ function App() {
       // All questions answered
       setLoading(true);
       setPhase(AppPhase.PROCESSING_2);
-      
+
       try {
         const service = getService();
         const qaPairs = questions.map((q, i) => ({ q, a: newAnswers[i] }));
@@ -110,18 +110,23 @@ function App() {
 
       {/* Main Content Overlay */}
       <div className="relative z-10 w-full min-h-screen flex flex-col">
-        
+
         {/* Header (Hidden on Gate) */}
         {phase !== AppPhase.GATE && (
-           <>
-             <header className="absolute top-0 w-full p-6 flex justify-between items-center z-20 backdrop-blur-sm">
-               <div className="text-xs font-mono tracking-widest text-gray-500">LUMINA v1.0</div>
-               <button onClick={resetApp} className="text-xs text-gray-500 hover:text-white transition-colors">RESET</button>
-             </header>
-             
-             {/* Cognitive HUD (Hidden on Gate) */}
-             <CognitiveHUD />
-           </>
+          <>
+            <header className="absolute top-0 w-full p-6 flex justify-start items-center gap-8 z-20 backdrop-blur-sm">
+              <div className="text-xs font-mono tracking-widest text-cyan-500/80">LUMINA v1.0</div>
+              <button
+                onClick={resetApp}
+                className="text-xs font-mono tracking-widest text-gray-400 hover:text-cyan-400 transition-colors border-b border-transparent hover:border-cyan-400/50 pb-0.5"
+              >
+                [ RESET_SYSTEM ]
+              </button>
+            </header>
+
+            {/* Cognitive HUD (Hidden on Gate) */}
+            <CognitiveHUD />
+          </>
         )}
 
         {/* 
@@ -130,16 +135,16 @@ function App() {
             Interactive elements now use 'my-auto' to vertically center themselves safely in the available space.
         */}
         <main className="flex-grow flex flex-col items-center justify-start w-full max-w-7xl mx-auto p-4 md:p-8 transition-all duration-500">
-          
+
           {phase === AppPhase.GATE && (
             <div className="w-full my-auto">
-               <WarningGate onUnlock={handleGateUnlock} />
+              <WarningGate onUnlock={handleGateUnlock} />
             </div>
           )}
 
           {/* INPUT PHASE */}
           {phase === AppPhase.INPUT && (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               className="w-full max-w-2xl backdrop-blur-xl bg-black/40 border border-white/5 p-8 rounded-3xl shadow-2xl my-auto"
@@ -162,7 +167,7 @@ function App() {
 
           {/* PROCESSING STATES */}
           {(phase === AppPhase.PROCESSING_1 || phase === AppPhase.PROCESSING_2) && (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               className="text-center my-auto"
@@ -184,7 +189,7 @@ function App() {
               className="w-full max-w-2xl backdrop-blur-xl bg-indigo-950/20 border border-indigo-500/20 p-8 rounded-3xl my-auto"
             >
               <div className="flex items-center space-x-2 mb-6 text-indigo-400 font-mono text-xs">
-                 <span>REFLECTION {currentQIndex + 1} / {questions.length}</span>
+                <span>REFLECTION {currentQIndex + 1} / {questions.length}</span>
               </div>
               <h3 className="text-2xl md:text-3xl font-light leading-relaxed mb-8 text-white">
                 {questions[currentQIndex]}
@@ -200,8 +205,8 @@ function App() {
               />
               <div className="flex justify-end mt-8">
                 <button
-                   onClick={handleAnswerSubmit}
-                   className="flex items-center space-x-2 text-indigo-300 hover:text-white transition-colors"
+                  onClick={handleAnswerSubmit}
+                  className="flex items-center space-x-2 text-indigo-300 hover:text-white transition-colors"
                 >
                   <span>NEXT</span>
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
@@ -215,7 +220,7 @@ function App() {
           {/* CLARITY PHASE */}
           {/* Note: Not using my-auto here. Using fixed top spacing to ensure headers clear the nav, allowing natural scroll for long results. */}
           {phase === AppPhase.CLARITY && analysis && (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
@@ -237,13 +242,13 @@ function App() {
                 </p>
               </div>
 
-               {/* Card 3: Actionable Step (Full Width) */}
-               <div className="md:col-span-2 bg-gradient-to-br from-cyan-900/30 to-blue-900/30 backdrop-blur-xl border border-cyan-400/20 rounded-2xl p-8 md:p-10 text-center mt-4">
-                 <h4 className="text-cyan-300 font-mono text-xs uppercase tracking-widest mb-6">Immediate Directive</h4>
-                 <p className="text-2xl md:text-3xl font-bold text-white tracking-tight leading-snug">
-                   {analysis.actionableStep}
-                 </p>
-               </div>
+              {/* Card 3: Actionable Step (Full Width) */}
+              <div className="md:col-span-2 bg-gradient-to-br from-cyan-900/30 to-blue-900/30 backdrop-blur-xl border border-cyan-400/20 rounded-2xl p-8 md:p-10 text-center mt-4">
+                <h4 className="text-cyan-300 font-mono text-xs uppercase tracking-widest mb-6">Immediate Directive</h4>
+                <p className="text-2xl md:text-3xl font-bold text-white tracking-tight leading-snug">
+                  {analysis.actionableStep}
+                </p>
+              </div>
             </motion.div>
           )}
 
