@@ -14,6 +14,11 @@ export class GeminiService {
     this.workerUrl = WORKER_URL;
   }
 
+  // Helper to remove Markdown code blocks (```json ... ```)
+  private cleanJson(text: string): string {
+    return text.replace(/```json/g, '').replace(/```/g, '').trim();
+  }
+
   // Generate 5 deep Socratic questions with Fallback Strategy
   async generateQuestions(dilemma: string): Promise<string[]> {
     const prompt = `The user is facing this dilemma: "${dilemma}". 
@@ -33,7 +38,7 @@ export class GeminiService {
     try {
       // Use the new Retry Cascade
       const text = await this.callWithRetry(prompt);
-      return JSON.parse(text);
+      return JSON.parse(this.cleanJson(text));
     } catch (error) {
       console.error("Gemini Generate Questions Failed:", error);
       throw error;
@@ -67,7 +72,7 @@ export class GeminiService {
     try {
       // Use the new Retry Cascade
       const text = await this.callWithRetry(prompt);
-      return JSON.parse(text);
+      return JSON.parse(this.cleanJson(text));
     } catch (error) {
       console.error("Gemini Analysis Failed:", error);
       throw error;
