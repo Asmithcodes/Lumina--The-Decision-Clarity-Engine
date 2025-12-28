@@ -30,9 +30,9 @@ const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ isOpen, onSubmit, onClose }) 
               </svg>
               <h2 className="text-lg font-bold">Connection Interrupted</h2>
             </div>
-            
+
             <p className="text-gray-400 text-sm mb-6">
-              The neural link to the core system has failed (likely a quota limit or expired key). 
+              The neural link to the core system has failed (likely a quota limit or expired key).
               To continue the analysis, please provide your own Gemini API Key.
             </p>
 
@@ -59,10 +59,10 @@ const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ isOpen, onSubmit, onClose }) 
                 Reconnect
               </button>
             </div>
-            
-             <p className="text-xs text-gray-600 mt-4 text-center">
-               Your key is stored only in your browser's memory for this session.
-             </p>
+
+            <p className="text-xs text-gray-600 mt-4 text-center">
+              Your key is stored only in your browser's memory for this session.
+            </p>
 
           </motion.div>
         </motion.div>

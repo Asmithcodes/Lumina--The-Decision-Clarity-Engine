@@ -7,10 +7,10 @@ const CognitiveHUD: React.FC = () => {
   // FUI Line Animation Variants
   const drawLine: Variants = {
     hidden: { pathLength: 0, opacity: 0 },
-    visible: { 
-      pathLength: 1, 
-      opacity: 1, 
-      transition: { duration: 0.5, ease: "easeInOut" } 
+    visible: {
+      pathLength: 1,
+      opacity: 1,
+      transition: { duration: 0.5, ease: "easeInOut" }
     }
   };
 
@@ -29,17 +29,17 @@ const CognitiveHUD: React.FC = () => {
         onClick={() => setIsOpen(!isOpen)}
         className="fixed top-6 right-6 z-50 group flex items-center justify-center w-10 h-10 rounded-full bg-black/20 border border-white/10 hover:border-cyan-500/50 hover:bg-cyan-950/30 backdrop-blur-md transition-all duration-300"
       >
-        <svg 
-          xmlns="http://www.w3.org/2000/svg" 
-          fill="none" 
-          viewBox="0 0 24 24" 
-          strokeWidth={1.5} 
-          stroke="currentColor" 
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
           className={`w-5 h-5 text-gray-400 group-hover:text-cyan-400 transition-colors ${isOpen ? 'text-cyan-400' : ''}`}
         >
           <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
         </svg>
-        
+
         {/* Button Glow Pulse */}
         <div className="absolute inset-0 rounded-full border border-cyan-500/0 group-hover:border-cyan-500/30 group-hover:shadow-[0_0_15px_rgba(6,182,212,0.2)] transition-all duration-300" />
       </motion.button>
@@ -56,10 +56,10 @@ const CognitiveHUD: React.FC = () => {
             style={{ clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 20px, -20px 0)" }} // Corner Cut visual
           >
             {/* Decorative Top Line */}
-            <motion.div 
+            <motion.div
               initial={{ width: 0 }}
               animate={{ width: "100%" }}
-              className="h-[1px] bg-gradient-to-r from-cyan-500/0 via-cyan-500/50 to-cyan-500/0" 
+              className="h-[1px] bg-gradient-to-r from-cyan-500/0 via-cyan-500/50 to-cyan-500/0"
             />
 
             <div className="p-5 font-mono text-xs space-y-4 text-cyan-100/80">
@@ -100,8 +100,8 @@ const CognitiveHUD: React.FC = () => {
               {/* Decorative Data Graphics */}
               <div className="pt-2 border-t border-cyan-500/20 flex justify-between items-end opacity-50">
                 <div className="space-y-1">
-                   <div className="h-0.5 w-12 bg-cyan-500/40" />
-                   <div className="h-0.5 w-8 bg-cyan-500/40" />
+                  <div className="h-0.5 w-12 bg-cyan-500/40" />
+                  <div className="h-0.5 w-8 bg-cyan-500/40" />
                 </div>
                 <span className="text-[9px] text-cyan-500">V.1.04.2</span>
               </div>
@@ -109,20 +109,20 @@ const CognitiveHUD: React.FC = () => {
 
             {/* Decorative SVG Overlay */}
             <svg className="absolute top-0 right-0 w-full h-full pointer-events-none opacity-20">
-               <motion.path 
-                 d="M 0 0 L 20 0 L 20 20" 
-                 fill="none" 
-                 stroke="#06b6d4" 
-                 strokeWidth="1"
-                 variants={drawLine}
-               />
-               <motion.path 
-                 d="M 288 100 L 288 300" 
-                 fill="none" 
-                 stroke="#06b6d4" 
-                 strokeWidth="1" 
-                 variants={drawLine}
-               />
+              <motion.path
+                d="M 0 0 L 20 0 L 20 20"
+                fill="none"
+                stroke="#06b6d4"
+                strokeWidth="1"
+                variants={drawLine}
+              />
+              <motion.path
+                d="M 288 100 L 288 300"
+                fill="none"
+                stroke="#06b6d4"
+                strokeWidth="1"
+                variants={drawLine}
+              />
             </svg>
 
           </motion.div>
