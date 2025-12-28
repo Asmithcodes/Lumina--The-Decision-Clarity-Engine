@@ -16,7 +16,9 @@ export class GeminiService {
 
   // Helper to remove Markdown code blocks (```json ... ```)
   private cleanJson(text: string): string {
-    return text.replace(/```json/g, '').replace(/```/g, '').trim();
+    const cleaned = text.replace(/```json/g, '').replace(/```/g, '').trim();
+    if (!cleaned) return '{}'; // Prevent empty string parsing error
+    return cleaned;
   }
 
   // Generate 5 deep Socratic questions with Fallback Strategy
@@ -36,9 +38,15 @@ export class GeminiService {
     Return ONLY a JSON array of strings.`;
 
     try {
-      // Use the new Retry Cascade
       const text = await this.callWithRetry(prompt);
-      return JSON.parse(this.cleanJson(text));
+      console.log("[Lumina] Raw Questions Response:", text); // Debug log
+      const cleaned = this.cleanJson(text);
+      try {
+        return JSON.parse(cleaned);
+      } catch (e) {
+        console.error("[Lumina] JSON Parse Error (Questions):", cleaned);
+        throw new Error("Invalid JSON from AI");
+      }
     } catch (error) {
       console.error("Gemini Generate Questions Failed:", error);
       throw error;
@@ -70,9 +78,18 @@ export class GeminiService {
     `;
 
     try {
-      // Use the new Retry Cascade
       const text = await this.callWithRetry(prompt);
-      return JSON.parse(this.cleanJson(text));
+      console.log("[Lumina] Raw Analysis Response:", text); // Debug log
+
+      const cleaned = this.cleanJson(text);
+      if (cleaned === '{}') throw new Error("Empty response from AI");
+
+      try {
+        return JSON.parse(cleaned);
+      } catch (parseError) {
+        console.error("[Lumina] JSON Parse Error (Analysis):", cleaned);
+        throw new Error("Invalid JSON structure from AI");
+      }
     } catch (error) {
       console.error("Gemini Analysis Failed:", error);
       throw error;
