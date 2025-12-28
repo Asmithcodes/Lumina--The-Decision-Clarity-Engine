@@ -1,0 +1,6 @@
+name = "lumina-gemini-proxy"
+main = "src/index.ts"
+compatibility_date = "2024-12-09"
+
+[vars]
+ALLOWED_ORIGIN = "https://asmithcodes.github.io"

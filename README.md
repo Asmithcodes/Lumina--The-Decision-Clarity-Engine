@@ -107,6 +107,27 @@ npm run build
 
 The built files will be in the `dist/` directory.
 
+## 🛡️ Secure Backend (Cloudflare Worker)
+
+To use the Google Gemini API securely without exposing your credentials, this project includes a Cloudflare Worker proxy.
+
+1. **Navigate to the worker directory**
+   ```bash
+   cd cloudflare-worker-api-proxy
+   ```
+2. **Deploy the worker** (Requires Cloudflare account)
+   ```bash
+   npm install
+   npx wrangler login
+   npx wrangler secret put API_KEY  # Paste your Google API Key
+   npx wrangler deploy
+   ```
+3. **Connect Frontend**
+   Add your worker URL to `.env`:
+   ```env
+   VITE_WORKER_URL=https://your-worker-name.workers.dev
+   ```
+
 ## 📁 Project Structure
 
 ```

@@ -1,5 +1,6 @@
 // Cloudflare Worker proxy URL - no API key needed in frontend!
-const WORKER_URL = 'https://lumina-gemini-proxy.lumina-proxy.workers.dev';
+// Cloudflare Worker proxy URL - configurable via .env
+const WORKER_URL = import.meta.env.VITE_WORKER_URL || 'http://localhost:8787';
 
 // Priority Cascade Models
 // Priority Cascade Models
