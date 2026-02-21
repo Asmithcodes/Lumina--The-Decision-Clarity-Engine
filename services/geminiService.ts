@@ -21,21 +21,26 @@ export class GeminiService {
     return cleaned;
   }
 
-  // Generate 5 deep Socratic questions with Fallback Strategy
+  // Generate 5 plain-language, easy-to-understand questions with Fallback Strategy
   async generateQuestions(dilemma: string): Promise<string[]> {
-    const prompt = `The user is facing this dilemma: "${dilemma}". 
-    Act as a ruthless interrogator who cuts through lies and excuses. Be brutal and piercing, but use simple words.
-    Generate exactly 5 devastating questions using plain language that expose their deepest fears, lies they tell themselves, and things they refuse to admit.
-    
-    Structure:
-    1. What is the real reason this bothers them? (Not the surface excuse)
-    2. What lie are they telling themselves to feel better?
-    3. Who are they really trying to protect or please, and why?
-    4. What will they lose or become if they keep avoiding this?
-    5. What truth are they most terrified to face?
+    const prompt = `The user is dealing with this situation: "${dilemma}". 
 
-    Dig deep. Attack their comfort zones. Force brutal self-honesty. Use simple, sharp language that cuts to the bone.
-    Return ONLY a JSON array of strings.`;
+    Your job is to help them think more clearly about their decision.
+    Generate exactly 5 simple, direct questions that help them reflect on what matters most to them.
+    
+    Rules for the questions:
+    - Use plain, everyday language. Avoid jargon, metaphors, or complex wording.
+    - Each question should be SHORT (one sentence) and easy for anyone to understand.
+    - Questions should help the user uncover what they truly want, what they are afraid of, and what is holding them back.
+    - Do NOT ask multiple things in one question. Keep it focused.
+    - The questions should follow this flow:
+      1. Ask what outcome they are really hoping for (their true goal).
+      2. Ask what is the main thing stopping them right now (their biggest obstacle).
+      3. Ask who else is affected by this decision and how that makes them feel.
+      4. Ask what they think will happen if they do nothing and let time decide.
+      5. Ask what small step they could take today that would move them in the right direction.
+
+    Return ONLY a JSON array of 5 strings. No extra text, no markdown, just the JSON array.`;
 
     try {
       const text = await this.callWithRetry(prompt);
@@ -53,27 +58,28 @@ export class GeminiService {
     }
   }
 
-  // Generate final clarity analysis with Fallback Strategy
+  // Generate final clarity analysis — opinionated and decisive — with Fallback Strategy
   async generateAnalysis(dilemma: string, qaPairs: { q: string, a: string }[]): Promise<any> {
     const conversation = qaPairs.map(p => `Q: ${p.q}\nA: ${p.a}`).join('\n');
     const prompt = `
-      Dilemma: "${dilemma}"
+      The user is dealing with this situation: "${dilemma}"
       
-      User's answers:
+      Here is what they revealed through their answers:
       ${conversation}
       
-      Strip away all their excuses and self-deception. Expose the ugly truth they're hiding from.
-      1. What core truth are they desperately avoiding? (Not what they want to believe, but what they KNOW deep down)
-      2. What blind spot or lie keeps them stuck? (What pattern are they repeating?)
-      3. What is the one hard action they must take? (The thing they're most afraid to do)
+      Based on everything they have shared, your job is to give them a clear, honest, and decisive recommendation.
+      You are NOT a neutral advisor — you are a trusted friend who has listened carefully and now tells them exactly what they should do.
       
-      Be brutally honest and cut deep, but use simple words. Destroy their comfortable illusions.
+      Instructions:
+      1. "coreTruth": In 1–2 plain sentences, summarize the key insight from their answers — what does this situation really come down to for them? Use simple, direct language.
+      2. "blindSpot": In 1–2 plain sentences, point out the one thing they may be overlooking or underestimating. Keep it clear and kind, not harsh.
+      3. "actionableStep": THIS IS THE MOST IMPORTANT PART. Based on all their answers, give ONE clear, specific recommendation. Tell them exactly what you think they should do. Commit to a direction — do NOT say "it depends" or give two options. Be decisive and encouraging. Use plain language. Write it as if you are saying: "Based on everything you told me, I think you should..."
       
       Return ONLY a JSON object with these exact keys:
       {
-        "coreTruth": "The brutal truth they avoid",
-        "blindSpot": "The lie lying to themselves",
-        "actionableStep": "The one hard thing they must do"
+        "coreTruth": "Key insight from their situation in simple language",
+        "blindSpot": "The thing they may be overlooking",
+        "actionableStep": "Your clear, specific, opinionated recommendation for them"
       }
     `;
 

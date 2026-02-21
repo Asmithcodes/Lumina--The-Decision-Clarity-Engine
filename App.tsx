@@ -198,7 +198,7 @@ function App() {
                 onChange={(e) => setCurrentInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleAnswerSubmit()}
                 autoFocus
-                placeholder="Type your truth..."
+                placeholder="Share your thoughts..."
                 className="w-full bg-transparent border-b border-indigo-500/30 py-3 text-xl focus:outline-none focus:border-indigo-400 transition-colors"
               />
               <div className="flex justify-end mt-8">
@@ -224,25 +224,25 @@ function App() {
               transition={{ duration: 0.8, ease: "easeOut" }}
               className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-6 pb-20 mt-32 md:mt-48"
             >
-              {/* Card 1: The Core Truth */}
+              {/* Card 1: Core Insight */}
               <div className="bg-cyan-950/20 backdrop-blur-xl border border-cyan-500/30 rounded-2xl p-6 md:p-8">
-                <h4 className="text-cyan-400 font-mono text-xs uppercase tracking-widest mb-4 border-b border-cyan-500/20 pb-2 inline-block">Core Truth</h4>
+                <h4 className="text-cyan-400 font-mono text-xs uppercase tracking-widest mb-4 border-b border-cyan-500/20 pb-2 inline-block">What This Comes Down To</h4>
                 <p className="text-xl md:text-2xl text-gray-100 font-light leading-relaxed">
                   {analysis.coreTruth}
                 </p>
               </div>
 
-              {/* Card 2: Blind Spot */}
+              {/* Card 2: Something to Consider */}
               <div className="bg-gray-900/40 backdrop-blur-xl border border-white/10 rounded-2xl p-6 md:p-8">
-                <h4 className="text-gray-400 font-mono text-xs uppercase tracking-widest mb-4 border-b border-gray-700/50 pb-2 inline-block">Blind Spot</h4>
+                <h4 className="text-gray-400 font-mono text-xs uppercase tracking-widest mb-4 border-b border-gray-700/50 pb-2 inline-block">Something To Consider</h4>
                 <p className="text-gray-300 leading-relaxed italic text-lg">
                   "{analysis.blindSpot}"
                 </p>
               </div>
 
-              {/* Card 3: Actionable Step (Full Width) */}
+              {/* Card 3: Our Recommendation (Full Width — the decisive verdict) */}
               <div className="md:col-span-2 bg-gradient-to-br from-cyan-900/30 to-blue-900/30 backdrop-blur-xl border border-cyan-400/20 rounded-2xl p-8 md:p-10 text-center mt-4">
-                <h4 className="text-cyan-300 font-mono text-xs uppercase tracking-widest mb-6">Immediate Directive</h4>
+                <h4 className="text-cyan-300 font-mono text-xs uppercase tracking-widest mb-6">Our Recommendation</h4>
                 <p className="text-2xl md:text-3xl font-bold text-white tracking-tight leading-snug">
                   {analysis.actionableStep}
                 </p>
