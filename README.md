@@ -1,4 +1,4 @@
-# 🔮 Lumina: The Decision Clarity Engine
+# Lumina: The Decision Clarity Engine
 
 > "The hardest person to be honest with is yourself. Lumina is the mirror that doesn't look away."
 
@@ -9,21 +9,21 @@ Lumina is a **Socratic mirror** designed to deconstruct the ego and expose the h
 
 ---
 
-## 🌪️ The Philosophy
+## The Philosophy
 
 Most decision-making tools help you *decide*. Lumina helps you *see*.
 
 Through a sequence of precisely calibrated, hard-hitting questions, Lumina forces you to bypass the superficial layers of self-justification. It doesn't give you advice; it reflects your own truth back to you until you can no longer ignore it.
 
-## ✨ Cognitive Features
+## Cognitive Features
 
-- **🎭 Deconstructive Questioning**: 5 devastatingly simple questions designed to bypass the ego and reach the core of your hesitation.
-- **🧠 The Double-Model Cascade**: A resilient architecture using **Gemini 2.5 Flash** as the primary engine, with an automatic fallback to **Flash Lite** to ensure clarity even under high entropy (quota limits).
-- **🕸️ NeuroKnot Visualization**: A kinetic, physics-based UI that reacts to your progress, visualizing the unraveling of mental knots in real-time.
-- **🔒 Zero-Exposure API**: All intelligence is proxied through a secure Cloudflare Worker, keeping the "brain" decoupled and the secrets safe.
-- **⚡ Weightless Interface**: Built for speed and immersion, featuring glassmorphic aesthetics and motion-driven navigation.
+- **Deconstructive Questioning**: 5 devastatingly simple questions designed to bypass the ego and reach the core of your hesitation.
+- **The Double-Model Cascade**: A resilient architecture using **Gemini 2.5 Flash** as the primary engine, with an automatic fallback to **Flash Lite** to ensure clarity even under high entropy (quota limits).
+- **NeuroKnot Visualization**: A kinetic, physics-based UI that reacts to your progress, visualizing the unraveling of mental knots in real-time.
+- **Zero-Exposure API**: All intelligence is proxied through a secure Cloudflare Worker, keeping the "brain" decoupled and the secrets safe.
+- **Weightless Interface**: Built for speed and immersion, featuring glassmorphic aesthetics and motion-driven navigation.
 
-## 🛠️ The Cognitive Stack
+## The Cognitive Stack
 
 | Layer | Technology | Rationale |
 | :--- | :--- | :--- |
@@ -35,7 +35,7 @@ Through a sequence of precisely calibrated, hard-hitting questions, Lumina force
 
 ---
 
-## 🚀 Materializing Locally
+## Materializing Locally
 
 ### Prerequisites
 - **Node.js 18+**
@@ -69,7 +69,7 @@ npm run dev
 
 ---
 
-## 📡 Deployment
+## Deployment
 
 Lumina is designed to breathe on the edge.
 
@@ -78,7 +78,7 @@ Lumina is designed to breathe on the edge.
 
 ---
 
-## 📂 Architecture of Thought
+## Architecture of Thought
 
 ```text
 ├── components/          # The Sensory Organs (React Components)
@@ -93,11 +93,11 @@ Lumina is designed to breathe on the edge.
 
 ---
 
-## 🤝 Collaboration
+## Collaboration
 
 Interested in refining the Socratic engine or the physics of clarity? Pull requests are welcome. Let's build better mirrors together.
 
-## 📄 Recognition
+## Recognition
 
 - Developed by **Asmith** ([asmyth@duck.com](mailto:asmyth@duck.com)).
 
